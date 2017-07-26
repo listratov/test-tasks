@@ -1,5 +1,8 @@
 <?php
 
+<?php
+
+echo "\n";
 
 $data1 = [
     'parent.child.field' => 1,
@@ -9,30 +12,41 @@ $data1 = [
     'parent2.child2.position' => 10,
     'parent3.child3.position' => 10,
 ];
-
+       
+    /**
+     * 1
+     **/
+$result = [];
 
 foreach($data1 as $key => $val) {
-   
-   $param = explode(".", $key);
-   $arr = [];
-   
-   for($i = 0; $i < count($param); $i++) {
-       echo "\n";
-       
-       $arr[$param[$i]] = [$param[$i]=>$val];
-       
-       
-       
+    $param = explode(".", $key);
+    $arr = $val;
+      for ($i = count($param) - 1; $i >= 0; --$i) {
+       $arr = array($param[$i] => $arr);
    }
-    print_r($arr);
-   // 
-   // print_r(count($param));
-  //  print_r($key);
-    
-    
+    $result = array_merge_recursive($result, $arr);
 }
 
-//$pieces = explode(".", $data1);
+    print_r($result);
+    
+    /**
+     *  2
+     **/
+    
+    $paths = [];
 
-
-//print_r($pieces);
+    function makePaths ($array, &$paths, $level, $currentKey) {
+    if ($currentKey) {
+        $currentKey .= '.';
+    }
+        foreach ($array as $key => $value) {
+            if (is_array($value)) {
+                makePaths($value, $paths, $level + 1, $currentKey . $key);
+            } else {
+                $paths[$currentKey . $key] = $value;
+            }
+        }
+    }
+    
+    makePaths($result, $paths, 0, '');
+    print_r($paths);
