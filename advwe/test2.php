@@ -33,19 +33,19 @@ print_r($result);
 
 $paths = [];
 
-function makePaths($array, &$paths, $level, $currentKey)
+function makePaths($array, &$paths, $currentKey)
 {
     if ($currentKey) {
         $currentKey .= '.';
     }
     foreach ($array as $key => $value) {
         if (is_array($value)) {
-            makePaths($value, $paths, $level + 1, $currentKey . $key);
+            makePaths($value, $paths, $currentKey . $key);
         } else {
             $paths[$currentKey . $key] = $value;
         }
     }
 }
 
-makePaths($result, $paths, 0, '');
+makePaths($result, $paths, '');
 print_r($paths);
