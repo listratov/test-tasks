@@ -35,9 +35,8 @@ $paths = [];
 
 function makePaths($array, &$paths, $currentKey)
 {
-    if ($currentKey) {
-        $currentKey .= '.';
-    }
+    empty($currentKey) ?: $currentKey .= '.';
+
     foreach ($array as $key => $value) {
         if (is_array($value)) {
             makePaths($value, $paths, $currentKey . $key);
