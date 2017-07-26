@@ -1,7 +1,5 @@
 <?php
 
-<?php
-
 echo "\n";
 
 $data1 = [
@@ -12,41 +10,42 @@ $data1 = [
     'parent2.child2.position' => 10,
     'parent3.child3.position' => 10,
 ];
-       
-    /**
-     * 1
-     **/
+
+/**
+ * 1
+ **/
 $result = [];
 
-foreach($data1 as $key => $val) {
+foreach ($data1 as $key => $val) {
     $param = explode(".", $key);
     $arr = $val;
-      for ($i = count($param) - 1; $i >= 0; --$i) {
-       $arr = array($param[$i] => $arr);
-   }
+    for ($i = count($param) - 1; $i >= 0; --$i) {
+        $arr = array($param[$i] => $arr);
+    }
     $result = array_merge_recursive($result, $arr);
 }
 
-    print_r($result);
-    
-    /**
-     *  2
-     **/
-    
-    $paths = [];
+print_r($result);
 
-    function makePaths ($array, &$paths, $level, $currentKey) {
+/**
+ *  2
+ **/
+
+$paths = [];
+
+function makePaths($array, &$paths, $level, $currentKey)
+{
     if ($currentKey) {
         $currentKey .= '.';
     }
-        foreach ($array as $key => $value) {
-            if (is_array($value)) {
-                makePaths($value, $paths, $level + 1, $currentKey . $key);
-            } else {
-                $paths[$currentKey . $key] = $value;
-            }
+    foreach ($array as $key => $value) {
+        if (is_array($value)) {
+            makePaths($value, $paths, $level + 1, $currentKey . $key);
+        } else {
+            $paths[$currentKey . $key] = $value;
         }
     }
-    
-    makePaths($result, $paths, 0, '');
-    print_r($paths);
+}
+
+makePaths($result, $paths, 0, '');
+print_r($paths);
